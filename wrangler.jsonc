@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mahila-jagriti-sansthan",
+  "name": "dawn-rice-709e",
   "compatibility_date": "2026-05-29",
   "observability": {
     "enabled": true
