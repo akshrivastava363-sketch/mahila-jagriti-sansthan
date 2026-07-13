@@ -33,11 +33,15 @@
 
     /* ---- NAV ---- */
     nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
-    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:70px;}
+    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:90px;}
     .nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
-    .logo-circle{width:44px;height:44px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;flex-shrink:0;letter-spacing:-0.5px;}
-    .logo-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--dark);line-height:1.2;}
-    .logo-text span{display:block;font-size:0.62rem;color:var(--muted);font-family:'Nunito Sans',sans-serif;font-weight:400;letter-spacing:1.2px;text-transform:uppercase;margin-top:1px;}
+    .logo-image{width:80px;height:auto;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:0;display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;flex-shrink:0;letter-spacing:-0.5px;}
+    .logo-text{display:flex;flex-direction:column;line-height:1.15;}
+    .logo-text strong{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:#1f2937;}
+
+.logo-text .tagline{font-family:'Nunito Sans',sans-serif;font-size:0.78rem;color:#666;letter-spacing:1px;}
+
+.logo-text .motto{font-family:'Nunito Sans',sans-serif;font-size:0.78rem;color:#B8860B;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
     .nav-menu{display:flex;align-items:center;gap:4px;list-style:none;}
     .nav-menu>li{position:relative;}
     .nav-menu>li>a{display:block;padding:8px 13px;color:var(--dark);font-size:0.84rem;font-weight:600;border-radius:7px;transition:all 0.2s;cursor:pointer;}
@@ -288,10 +292,11 @@
 <nav>
   <div class="nav-inner">
     <div class="nav-logo" onclick="showPage('home')">
-      <img src="Home.jpg" class="logo-circle" alt="Mahila Jagriti Sansthan Logo">
+      <img src="Home.jpg" class="logo-image" alt="Mahila Jagriti Sansthan Logo">
       <div class="logo-text">
-        Mahila Jagriti Sansthan
-        <span>Empowering Women Since 1993</span>
+        <strong>Mahila Jagriti Sansthan</strong>
+        <div class="tagline>Empowering Women Since 1993</div>
+        <div class="motto"By Women For Women</div>
       </div>
     </div>
     <ul class="nav-menu">
