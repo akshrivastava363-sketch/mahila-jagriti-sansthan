@@ -794,8 +794,8 @@
       <div class="gal-tabs">
         <button class="gal-tab on" onclick="filterGal(this,'all','pg')">All</button>
         <button class="gal-tab" onclick="filterGal(this,'programs','pg')">Programs / Campaigns</button>
-        <button class="gal-tab" onclick="filterGal(this,'trainings','pg')">Trainings</button>
-        <button class="gal-tab" onclick="filterGal(this,'awards','pg')">Awards / Media</button>
+        <button class="gal-tab" onclick="filterGal(this,'trainings','tg')">Trainings</button>
+        <button class="gal-tab" onclick="filterGal(this,'awards','ag')">Awards / Media</button>
       </div>
       <div class="gal-grid" id="pg-grid"></div>
     </div>
@@ -1064,25 +1064,45 @@ function buildGallery(gridId){
 }
 
 function filterGal(btn,cat,gridId){
-  var wrap=btn.closest('.wrap')||btn.parentElement;
-  wrap.querySelectorAll('.gal-tab').forEach(function(t){t.classList.remove('on');});
-  btn.classList.add('on');
-  var grid=document.getElementById(gridId+'-grid');
-  if(!grid) return;
-  grid.querySelectorAll('.gal-item').forEach(function(item){
-    var ic=item.getAttribute('data-cat');
-    item.style.display=(cat==='all'||ic===cat||ic==='all')?'flex':'none';
-  });
+
+    // Remember the currently selected upload category
+    if(cat !== "all"){
+        curGalCat = cat;
+    }
+
+    var wrap=btn.closest('.wrap')||btn.parentElement;
+
+    wrap.querySelectorAll('.gal-tab').forEach(function(t){
+        t.classList.remove('on');
+    });
+
+    btn.classList.add('on');
+
+    var grid=document.getElementById(gridId+'-grid');
+
+    if(!grid) return;
+
+    grid.querySelectorAll('.gal-item').forEach(function(item){
+
+        var ic=item.getAttribute('data-cat');
+
+        item.style.display=(cat==='all'||ic===cat||ic==='all')
+            ? 'flex'
+            : 'none';
+
+    });
+
 }
 
 function showGalModal(gridId){
-  curGalGrid=gridId;
-  var cat=prompt('Enter category (programs / trainings / awards):','programs');
-  if(!cat||['programs','trainings','awards'].indexOf(cat.trim().toLowerCase())<0){
-    alert('Please enter: programs, trainings, or awards');return;
-  }
-  curGalCat=cat.trim().toLowerCase();
-  document.getElementById('galInput').click();
+
+    curGalGrid = gridId;
+
+    if(!curGalCat){
+        curGalCat = "programs";
+    }
+    
+    document.getElementById("galInput").click();
 }
 
 async function handleGalUpload(event){
@@ -1101,6 +1121,7 @@ async function handleGalUpload(event){
 
             fd.append("file", files[i]);
             fd.append("type","gallery");
+            console.log("Uploading category:", curGalCat);
             fd.append("category",curGalCat);
 
             showProgress(
