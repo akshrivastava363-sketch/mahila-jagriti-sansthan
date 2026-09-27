@@ -1023,24 +1023,63 @@ function buildGallery(gridId){
         grid.appendChild(p);
       }
       photos.forEach(function(photo){
-        var div=document.createElement('div');
-        div.className='gal-item';
-        div.setAttribute('data-cat',photo.category||'programs');
-        var img=document.createElement('img');
-        img.src=photo.url;img.alt='';img.loading='lazy';
-        img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:10px;';
-        var ov=document.createElement('div');
-        ov.className='gal-overlay adm';
-        ov.style.cssText='opacity:0;display:flex;';
-        ov.textContent='Remove';
-        (function(key,gId){
-          ov.addEventListener('click',function(e){
-            e.stopPropagation();
-            if(confirm('Remove this photo from cloud storage?')){
-              showProgress('Deleting...');
-              r2Delete(key).then(function(){buildGallery(gId);}).catch(function(e){alert(e.message);}).finally(function(){hideProgress();});
-            }
+  var div=document.createElement('div');
+  div.className='gal-item';
+  div.setAttribute('data-cat',photo.category||'programs');
+
+  // PUBLIC: clicking the image opens the original image in a new tab.
+  var link=document.createElement('a');
+  link.href=photo.url;
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  link.title='Open image in new tab';
+  link.style.cssText='position:absolute;inset:0;display:block;z-index:1;';
+
+  var img=document.createElement('img');
+  img.src=photo.url;
+  img.alt='Gallery image';
+  img.loading='lazy';
+  img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:10px;';
+
+  link.appendChild(img);
+  div.appendChild(link);
+
+  // ADMIN ONLY: Remove button.
+  var del=document.createElement('button');
+  del.type='button';
+  del.className='gal-delete adm-btn';
+  del.textContent='Remove';
+  del.title='Remove this photo from cloud storage';
+  del.style.display='none';
+
+  (function(key,gId){
+    del.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Never allow public visitors to delete anything.
+      if(!document.body.classList.contains('is-admin')) return;
+
+      if(confirm('Remove this photo from cloud storage?')){
+        showProgress('Deleting...');
+
+        r2Delete(key)
+          .then(function(){
+            buildGallery(gId);
+          })
+          .catch(function(e){
+            alert(e.message);
+          })
+          .finally(function(){
+            hideProgress();
           });
+      }
+    });
+  })(photo.key,gridId);
+
+  div.appendChild(del);
+  grid.appendChild(div);
+});
         })(photo.key,gridId);
         div.addEventListener('mouseenter',function(){if(document.body.classList.contains('is-admin'))ov.style.opacity='1';});
         div.addEventListener('mouseleave',function(){ov.style.opacity='0';});
