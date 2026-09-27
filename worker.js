@@ -117,11 +117,15 @@ async function handleFile(request, env, url) {
 
   // Serve PDFs inline so they open in a new tab for reading;
   // the browser still shows its own Download button.
-  if (key.toLowerCase().endsWith('.pdf')) {
-    const filename = key.split('/').pop();
-    headers.set('Content-Disposition', `inline; filename="${filename}"`);
-    headers.set('Content-Type', 'application/pdf');
-  }
+  // PDFs should download.
+// Images and other media should open inline in the browser.
+if (key.toLowerCase().endsWith('.pdf')) {
+  const filename = key.split('/').pop();
+  headers.set('Content-Disposition', `attachment; filename="${filename}"`);
+  headers.set('Content-Type', 'application/pdf');
+} else {
+  headers.set('Content-Disposition', 'inline');
+}
 
   return new Response(obj.body, { headers });
 }
